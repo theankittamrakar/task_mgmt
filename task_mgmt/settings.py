@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-ru+6m+b@uj$&-)p)tq^&m+_o59&0_-o7uqr#76%1y!h6sgm*y(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "192.168.56.1","192.168.10.240","192.168.10.254"]
+ALLOWED_HOSTS = ["localhost", "192.168.56.1", "192.168.10.240", "192.168.10.254"]
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'polymorphic',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    # 'task_app.custom_middleware.CustomExceptionHandlerMiddleware',
 ]
 
 ROOT_URLCONF = 'task_mgmt.urls'
@@ -128,7 +130,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'],
+    # 'EXCEPTION_HANDLER': 'task_app.utils.custom_exception_handler',
 }
 
 AUTH_USER_MODEL = 'task_app.Users'

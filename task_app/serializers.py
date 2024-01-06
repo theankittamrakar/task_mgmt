@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Departments, Projects, Tasks, Teams, Users
+
+from .models import Departments, Projects, Tasks, Teams, Users, Attachments, Status
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -32,6 +33,8 @@ class ProjectsSerializer(serializers.ModelSerializer):
 
 
 class TasksSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all(), write_only=True)
+
     class Meta:
         model = Tasks
         fields = '__all__'
@@ -47,3 +50,15 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
         fields = '__all__'
+
+
+class AttachmentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attachments
+        fields = "__all__"
+
+
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Status
+        fields = "__all__"
