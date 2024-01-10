@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-ru+6m+b@uj$&-)p)tq^&m+_o59&0_-o7uqr#76%1y!h6sgm*y(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "192.168.56.1", "192.168.10.240", "192.168.10.254"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.56.1", "192.168.10.240", "192.168.10.254"]
 
 # Application definition
 
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    # 'task_app.custom_middleware.CustomExceptionHandlerMiddleware',
+    'task_app.custom_middleware.CustomExceptionHandlerMiddleware',
 ]
 
 ROOT_URLCONF = 'task_mgmt.urls'
@@ -133,10 +133,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication'],
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
     # 'EXCEPTION_HANDLER': 'task_app.utils.custom_exception_handler',
 }
 
-AUTH_USER_MODEL = 'task_app.Users'
+AUTH_USER_MODEL = 'task_app.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = [

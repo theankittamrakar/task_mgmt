@@ -1,12 +1,15 @@
 from django.contrib.auth import authenticate
+from rest_framework import mixins
 from rest_framework import viewsets, generics, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Departments, Projects, Tasks, Teams, Users, Attachments, Status
-from .serializers import DepartmentsSerializer, ProjectsSerializer, TasksSerializer, TeamsSerializer, UsersSerializer, \
-    UserRegistrationSerializer, UserLoginSerializer, AttachmentsSerializer, StatusSerializer
+from .models import Project, Task, Team, User, Attachment, Status
+from .serializers import ProjectSerializer, TaskSerializer, TeamSerializer, UserSerializer, \
+    UserRegistrationSerializer, UserLoginSerializer, AttachmentSerializer, StatusSerializer, UserInTeamSerializer, \
+    ProjectsOfTeamSerializer
 
 
 class UserLoginView(generics.CreateAPIView):
@@ -14,22 +17,33 @@ class UserLoginView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
 
-        username = serializer.validated_data['username']
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            request.validation_errors = e.detail
+            return Response({'status': False, 'detail': 'Validation Error', 'errors': e.detail},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        email = serializer.validated_data['email']
         password = serializer.validated_data['password']
-        user = authenticate(request, username=username, password=password)
+
+        # print(f"Email: {email}")
+        # print(f"Password: {password}")
+
+        user = authenticate(request, email=email, password=password)
         if user:
             refresh = RefreshToken.for_user(user)
             access = refresh.access_token
             return Response(
-                {'data': {'token': str(access), 'refresh': str(refresh)}, "status": True, "detail": "Success"})
+                {'data': {'token': str(access), 'refresh': str(refresh)}, "status": True, "detail": "Success"},
+                status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid credentials', "status": False}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UserRegistrationView(generics.CreateAPIView):
-    queryset = Users.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
@@ -41,17 +55,19 @@ class UserRegistrationView(generics.CreateAPIView):
             return Response({'status': False, 'detail': 'Validation Error', 'errors': e.detail},
                             status=status.HTTP_400_BAD_REQUEST)
         self.perform_create(serializer)
-        refresh = RefreshToken.for_user(serializer.instance)
-        access = refresh.access_token
-        data = {'data': {'token': str(access), 'refresh': str(refresh)}, 'status': True, 'detail': 'Success'}
+        # refresh = RefreshToken.for_user(serializer.instance)
+        # access = refresh.access_token
+        # data = {'data': {'token': str(access), 'refresh': str(refresh)}, 'status': True, 'detail': 'Success'}
+        data = {'data': {'status': True, 'detail': 'Success'}}
+
         headers = self.get_success_headers(serializer.data)
         # 1 / 0
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class TasksListCreateView(generics.ListCreateAPIView):
-    queryset = Tasks.objects.all()
-    serializer_class = TasksSerializer
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -67,35 +83,82 @@ class TasksListCreateView(generics.ListCreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class DepartmentsViewSet(viewsets.ModelViewSet):
-    queryset = Departments.objects.all()
-    serializer_class = DepartmentsSerializer
-
-
-class ProjectsViewSet(viewsets.ModelViewSet):
-    queryset = Projects.objects.all()
-    serializer_class = ProjectsSerializer
-
-
-
-
 class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Tasks.objects.all()
-    serializer_class = TasksSerializer
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
-class TeamsViewSet(viewsets.ModelViewSet):
-    queryset = Teams.objects.all()
-    serializer_class = TeamsSerializer
+
+class TeamListCreateView(generics.ListCreateAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+
+
+# custom roles and permissions
+
+class TeamRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+
+
+class TeamListUsersView(generics.GenericAPIView, mixins.ListModelMixin):
+    queryset = Team.objects.all()
+    serializer_class = UserInTeamSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        team = self.get_object()
+        users = team.users.all()
+        serializer = UserInTeamSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TeamListProjectsView(generics.GenericAPIView, mixins.ListModelMixin):
+    queryset = Team.objects.all()
+    serializer_class = ProjectsOfTeamSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        team = self.get_object()
+        projects = team.projects.all()
+        serializer = ProjectsOfTeamSerializer(projects, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ProjectListView(TeamListCreateView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            request.validation_errors = e.detail
+            return Response({'status': False, 'detail': 'Validation Error', 'errors': e.detail},
+                            status=status.HTTP_400_BAD_REQUEST)
+        self.perform_create(serializer)
+        data = {'data': {'status': True, 'detail': 'Success'}}
+        headers = self.get_success_headers(serializer.data)
+        return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView, mixins.ListModelMixin):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
 
 
 class UsersViewSet(viewsets.ModelViewSet):
-    queryset = Users.objects.all()
-    serializer_class = UsersSerializer
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class AttachmentsViewSet(viewsets.ModelViewSet):
-    queryset = Attachments.objects.all()
-    serializer_class = AttachmentsSerializer
+    queryset = Attachment.objects.all()
+    serializer_class = AttachmentSerializer
 
 
 class StatusViewSet(viewsets.ModelViewSet):

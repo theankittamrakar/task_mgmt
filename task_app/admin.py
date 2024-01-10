@@ -1,6 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Users, Departments, Projects
+from .models import User, Team, Project
 
-admin.site.register(Users)
+admin.site.register(User)
+admin.site.register(Team)
+admin.site.register(Project)

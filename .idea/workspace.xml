@@ -4,7 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7716921-5ec6-4e1d-91eb-114d21081450" name="Changes" comment="2nd commit" />
+    <list default="true" id="f7716921-5ec6-4e1d-91eb-114d21081450" name="Changes" comment="3rd commit">
+      <change afterPath="$PROJECT_DIR$/task_app/migrations/0002_remove_task_done.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task_app/migrations/0003_alter_user_email.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task_app/migrations/0004_alter_user_first_name_alter_user_last_name_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task_app/migrations/0005_alter_user_first_name_alter_user_last_name_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task_app/migrations/0006_alter_project_name_alter_user_first_name_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task_app/migrations/0007_alter_project_team.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a692149b-84ee-4cad-a2fc-bd16899b2f3c.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a692149b-84ee-4cad-a2fc-bd16899b2f3c.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0002_alter_users_department.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/migrations/0008_alter_task_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0003_remove_users_permissions_remove_users_roles_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0004_rename_project_id_tasks_project_alter_teams_projects_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0005_remove_users_user_name.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0006_attachments_status.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0007_alter_status_is_current.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/migrations/0008_tasks_end_date_tasks_parent_tasks_start_date.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_mgmt/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_mgmt/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_mgmt/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_mgmt/urls.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,12 +42,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "theankittamrakar"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;theankittamrakar&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -127,6 +153,13 @@
       <workItem from="1704255737317" duration="14082000" />
       <workItem from="1704342321430" duration="12530000" />
       <workItem from="1704539228797" duration="281000" />
+      <workItem from="1704601067031" duration="13525000" />
+      <workItem from="1704688965639" duration="18085000" />
+      <workItem from="1704774043042" duration="19888000" />
+      <workItem from="1704851904550" duration="845000" />
+      <workItem from="1704860585448" duration="8544000" />
+      <workItem from="1704875459649" duration="8512000" />
+      <workItem from="1704887047766" duration="1509000" />
     </task>
     <task id="LOCAL-00001" summary="models and auth">
       <option name="closed" value="true" />
@@ -144,7 +177,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704539320213</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="3rd commit">
+      <option name="closed" value="true" />
+      <created>1704601679551</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1704601679551</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,17 +205,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="models and auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="models and auth" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/task_app/views.py</url>
-          <line>86</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="2nd commit" />
+    <MESSAGE value="3rd commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="3rd commit" />
   </component>
 </project>

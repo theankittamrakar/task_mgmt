@@ -1,60 +1,67 @@
 from rest_framework import serializers
 
-from .models import Departments, Projects, Tasks, Teams, Users, Attachments, Status
+from .models import Project, Task, Team, User, Attachment, Status
 
 
 class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=100)
+    email = serializers.EmailField(max_length=100)
     password = serializers.CharField(max_length=100, write_only=True)
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
-        fields = ('id', 'username', 'email', 'password')
+        model = User
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = Users.objects.create_user(**validated_data)
+        user = User.objects.create_user(**validated_data)
         return user
 
 
-class DepartmentsSerializer(serializers.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Departments
-        fields = '__all__'
-        # fields = ('id', 'name')
-
-
-class ProjectsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Projects
+        model = Project
         fields = '__all__'
 
 
-class TasksSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all(), write_only=True)
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'start_date', 'end_date', 'project']
+
+    # user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    users = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all(), write_only=True)
 
     class Meta:
-        model = Tasks
+        model = Team
         fields = '__all__'
 
 
-class TeamsSerializer(serializers.ModelSerializer):
+class UserInTeamSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Teams
+        model = User
+        fields = ['id', 'username', 'email']
+
+
+class ProjectsOfTeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['name']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = '__all__'
 
 
-class UsersSerializer(serializers.ModelSerializer):
+class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
-        fields = '__all__'
-
-
-class AttachmentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Attachments
+        model = Attachment
         fields = "__all__"
 
 
