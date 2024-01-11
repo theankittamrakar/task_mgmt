@@ -10,6 +10,7 @@ from .models import Project, Task, Team, User, Attachment, Status
 from .serializers import ProjectSerializer, TaskSerializer, TeamSerializer, UserSerializer, \
     UserRegistrationSerializer, UserLoginSerializer, AttachmentSerializer, StatusSerializer, UserInTeamSerializer, \
     ProjectsOfTeamSerializer
+from .utils import StandardResultsSetPagination
 
 
 class UserLoginView(generics.CreateAPIView):
@@ -154,6 +155,8 @@ class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView, mi
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = StandardResultsSetPagination
+
 
 
 class AttachmentsViewSet(viewsets.ModelViewSet):

@@ -54,10 +54,11 @@ class ProjectsOfTeamSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    teams = TeamSerializer(many=True, read_only=True)
     class Meta:
         model = User
-        fields = '__all__'
-
+        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'teams']
+        extra_kwargs = {'password': {'write_only': True}}
 
 class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
