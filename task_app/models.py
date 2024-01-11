@@ -35,7 +35,7 @@ class User(AbstractUser):
 
 
 class Task(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=100)
     teams = models.ManyToManyField(Team, related_name='tasks', blank=True)

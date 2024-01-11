@@ -1,4 +1,6 @@
 from django.urls import path, include
+
+
 from . import views
 from rest_framework.routers import DefaultRouter
 
@@ -14,8 +16,11 @@ router.register(r'attachments', AttachmentsViewSet, basename='attachments')
 router.register(r'status', StatusViewSet, basename='status')
 
 
+
+
 urlpatterns = [
     path('', include(router.urls)),
+    # path('', views.ApiRoot.as_view(), name='views.ApiRoot.name'),
     path('register/', UserRegistrationView.as_view(), name='user-register'),
     path('login/', UserLoginView.as_view(), name='user-login'),
 

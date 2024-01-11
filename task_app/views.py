@@ -2,11 +2,13 @@ from django.contrib.auth import authenticate
 from rest_framework import mixins
 from rest_framework import viewsets, generics, status
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from .models import Project, Task, Team, User, Attachment, Status
+from .permissions import IsManager, IsMember
 from .serializers import ProjectSerializer, TaskSerializer, TeamSerializer, UserSerializer, \
     UserRegistrationSerializer, UserLoginSerializer, AttachmentSerializer, StatusSerializer, UserInTeamSerializer, \
     ProjectsOfTeamSerializer
@@ -46,6 +48,7 @@ class UserLoginView(generics.CreateAPIView):
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
+    name = "registration"
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -69,6 +72,7 @@ class UserRegistrationView(generics.CreateAPIView):
 class TasksListCreateView(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    pagination_class = StandardResultsSetPagination
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -150,13 +154,18 @@ class ProjectListView(TeamListCreateView):
 class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView, mixins.ListModelMixin):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    pagination_class = StandardResultsSetPagination  # Make sure to import StandardResultsSetPagination
+
+    def get_permissions(self):
+        if self.request.method in ['GET']:
+            return [IsMember()]
+        elif self.request.method in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']:
+            return [IsManager()]
 
 
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    pagination_class = StandardResultsSetPagination
-
 
 
 class AttachmentsViewSet(viewsets.ModelViewSet):
