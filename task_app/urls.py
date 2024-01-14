@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-
 from . import views
 from rest_framework.routers import DefaultRouter
 
@@ -14,8 +13,6 @@ router = DefaultRouter()
 router.register(r'users', UsersViewSet, basename='users')
 router.register(r'attachments', AttachmentsViewSet, basename='attachments')
 router.register(r'status', StatusViewSet, basename='status')
-
-
 
 
 urlpatterns = [
@@ -35,3 +32,4 @@ urlpatterns = [
     path('projects/', ProjectListView.as_view(), name='project-list'),
     path('projects/<int:pk>/', ProjectRetrieveUpdateDestroyView.as_view(), name='project-retrieve-update'),
 ]
+

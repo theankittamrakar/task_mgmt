@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'task_app.custom_middleware.CustomExceptionHandlerMiddleware',
+    # 'task_app.custom_middleware.CustomExceptionHandlerMiddleware',
 ]
 
 ROOT_URLCONF = 'task_mgmt.urls'

@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7716921-5ec6-4e1d-91eb-114d21081450" name="Changes" comment="custom permissions according to group">
+    <list default="true" id="f7716921-5ec6-4e1d-91eb-114d21081450" name="Changes" comment="commit before deploy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_app/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/task_mgmt/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/task_mgmt/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -138,7 +143,8 @@
       <workItem from="1704875459649" duration="8512000" />
       <workItem from="1704887047766" duration="2066000" />
       <workItem from="1704946865194" duration="14765000" />
-      <workItem from="1705067330771" duration="3319000" />
+      <workItem from="1705067330771" duration="5455000" />
+      <workItem from="1705206551960" duration="10493000" />
     </task>
     <task id="LOCAL-00001" summary="models and auth">
       <option name="closed" value="true" />
@@ -188,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704973148690</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="commit before deploy">
+      <option name="closed" value="true" />
+      <created>1705071349754</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705071349754</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +227,7 @@
     <MESSAGE value="CRUD for Teams-&gt;Users and Projects completed" />
     <MESSAGE value="Pagination and Custom Paginations" />
     <MESSAGE value="custom permissions according to group" />
-    <option name="LAST_COMMIT_MESSAGE" value="custom permissions according to group" />
+    <MESSAGE value="commit before deploy" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit before deploy" />
   </component>
 </project>

@@ -24,15 +24,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = '__all__'
 
-
-class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = ['name', 'description', 'start_date', 'end_date', 'project']
-
-    # user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
-
-
 class TeamSerializer(serializers.ModelSerializer):
     users = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all(), write_only=True)
 
@@ -40,12 +31,10 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = '__all__'
 
-
 class UserInTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email']
-
 
 class ProjectsOfTeamSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,12 +42,19 @@ class ProjectsOfTeamSerializer(serializers.ModelSerializer):
         fields = ['name']
 
 
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'start_date', 'end_date', 'user', 'teams']
+
+    # user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
 class UserSerializer(serializers.ModelSerializer):
     teams = TeamSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'teams']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password', 'teams']
         extra_kwargs = {'password': {'write_only': True}}
 
 

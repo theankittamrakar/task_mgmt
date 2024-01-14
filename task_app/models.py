@@ -48,6 +48,21 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        super(Task, self).save(*args, **kwargs)
+
+        # Check if the task is assigned to any teams
+        if self.teams.exists():
+            # Iterate through the teams and assign the task to each user in the team
+            for team in self.teams.all():
+                for user in team.users.all():
+                    TaskAssignment.objects.create(task=self, user=user)
+
+class TaskAssignment(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
 
 class Attachment(PolymorphicModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

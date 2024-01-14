@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate
+from django.http import HttpResponseRedirect
+from django.urls import get_resolver
 from rest_framework import mixins
 from rest_framework import viewsets, generics, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import generics
 from rest_framework.response import Response
@@ -12,7 +15,7 @@ from .permissions import IsManager, IsMember
 from .serializers import ProjectSerializer, TaskSerializer, TeamSerializer, UserSerializer, \
     UserRegistrationSerializer, UserLoginSerializer, AttachmentSerializer, StatusSerializer, UserInTeamSerializer, \
     ProjectsOfTeamSerializer
-from .utils import StandardResultsSetPagination
+from .utils import StandardResultsSetPagination, PaginationMixin, PermissionMixin
 
 
 class UserLoginView(generics.CreateAPIView):
@@ -69,7 +72,7 @@ class UserRegistrationView(generics.CreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class TasksListCreateView(generics.ListCreateAPIView):
+class TasksListCreateView( PaginationMixin, generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     pagination_class = StandardResultsSetPagination
@@ -88,26 +91,28 @@ class TasksListCreateView(generics.ListCreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class TaskRetrieveUpdateDestroyView(PaginationMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    pagination_class = StandardResultsSetPagination
 
-
-class TeamListCreateView(generics.ListCreateAPIView):
+class TeamListCreateView(PaginationMixin, generics.ListCreateAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+    pagination_class = StandardResultsSetPagination
 
-
-# custom roles and permissions
-
-class TeamRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class TeamRetrieveUpdateDestroyView(PaginationMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+    pagination_class = StandardResultsSetPagination
 
 
-class TeamListUsersView(generics.GenericAPIView, mixins.ListModelMixin):
+
+class TeamListUsersView(PaginationMixin, generics.GenericAPIView, mixins.ListModelMixin):
     queryset = Team.objects.all()
     serializer_class = UserInTeamSerializer
+    pagination_class = StandardResultsSetPagination
+
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -119,9 +124,11 @@ class TeamListUsersView(generics.GenericAPIView, mixins.ListModelMixin):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TeamListProjectsView(generics.GenericAPIView, mixins.ListModelMixin):
+class TeamListProjectsView(PaginationMixin, generics.GenericAPIView, mixins.ListModelMixin):
     queryset = Team.objects.all()
     serializer_class = ProjectsOfTeamSerializer
+    pagination_class = StandardResultsSetPagination
+
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -136,6 +143,8 @@ class TeamListProjectsView(generics.GenericAPIView, mixins.ListModelMixin):
 class ProjectListView(TeamListCreateView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    pagination_class = StandardResultsSetPagination
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -151,10 +160,10 @@ class ProjectListView(TeamListCreateView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView, mixins.ListModelMixin):
+class ProjectRetrieveUpdateDestroyView(PaginationMixin, generics.RetrieveUpdateDestroyAPIView, mixins.ListModelMixin):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    pagination_class = StandardResultsSetPagination  # Make sure to import StandardResultsSetPagination
+    pagination_class = StandardResultsSetPagination
 
     def get_permissions(self):
         if self.request.method in ['GET']:
@@ -163,7 +172,7 @@ class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView, mi
             return [IsManager()]
 
 
-class UsersViewSet(viewsets.ModelViewSet):
+class UsersViewSet(PaginationMixin, viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
